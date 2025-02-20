@@ -40,37 +40,25 @@ The program will output:
 ## Compilation and Execution
 
 ### Build & Run
+To clone and run this project, you'll need Git and CMake installed on your computer. From your command line:
 
+# Clone this repository
+$ git clone https://github.com/marybadalyan/vectorvslist
+
+# Go into the repository
+$ cd vectorvslist
+
+# Generate the build files
+$ cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
+
+# Build the project
+$ cmake --build build --config Release
+
+Then, run the executable generated in the build directory.
 Clone the repository:
 
-```bash
-git clone https://github.com/marybadalyan/listvsvector.git
-```
 
-Navigate to the directory:
 
-```bash
-cd listvsvector
-```
-
-### Compilation Command
-
-To compile the program, use the following command (ensure you replace `listvsvector.cpp` with your actual source file name, if different):
-
-```bash
-g++ -std=c++17 -O2 linearSearchInsertRemove.cpp -o main
-```
-
-- `-std=c++17` ensures that you're using the C++17 standard (or use `-std=c++11` for C++11).
-- `-O2` enables optimization to improve the performance of the program.
-
-### Run the Program
-
-After compiling, you can run the program with:
-
-```bash
-./main
-```
 ## Performance Benchmark
 
 
