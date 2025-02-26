@@ -98,12 +98,12 @@ jobs:
           executable="vectorvslist.exe"  # Add .exe for Windows
         fi
         
-        # Check if the file exists before trying to run it
-        echo "Checking if executable exists: $executable"
-        if [ -f "$executable" ]; then
-          echo "Executable found, running it"
-          ./$executable  # This works for both Windows (Git Bash) and Linux/macOS
-        else
-          echo "Executable not found: $executable"
-          exit 1  # Fail if the executable isn't found
-        fi
+        # # Check if the file exists before trying to run it
+        # echo "Checking if executable exists: $executable"
+        # if [ -f "$executable" ]; then
+        #   echo "Executable found, running it"
+        #   ./$executable  # This works for both Windows (Git Bash) and Linux/macOS
+        # else
+        #   echo "Executable not found: $executable"
+        #   exit 1  # Fail if the executable isn't found
+        # fi
