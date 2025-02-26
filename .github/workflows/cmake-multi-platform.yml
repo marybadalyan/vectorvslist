@@ -74,36 +74,4 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
 
-    - name: Debug - List Build Directory Again
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: ${{ matrix.os == 'windows-latest' && 'pwsh' || 'bash' }}
-      run: |
-        echo "Listing the entire build directory again to debug"
-        if [[ "$RUNNER_OS" == "Windows" ]]; then
-          # Use PowerShell command on Windows
-          Get-ChildItem -Recurse ${{ steps.strings.outputs.build-output-dir }}
-        else
-          # Use bash command on Linux/macOS
-          ls -R ${{ steps.strings.outputs.build-output-dir }}
-        fi
-
-    - name: Run Executable
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: bash
-      run: |
-        # Set executable name based on OS
-        executable="vectorvslist"  # Start with base executable name
-        
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          executable="vectorvslist.exe"  # Add .exe for Windows
-        fi
-        
-        # # Check if the file exists before trying to run it
-        # echo "Checking if executable exists: $executable"
-        # if [ -f "$executable" ]; then
-        #   echo "Executable found, running it"
-        #   ./$executable  # This works for both Windows (Git Bash) and Linux/macOS
-        # else
-        #   echo "Executable not found: $executable"
-        #   exit 1  # Fail if the executable isn't found
-        # fi
+   
