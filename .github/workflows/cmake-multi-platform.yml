@@ -57,7 +57,7 @@ jobs:
       shell: bash
       run: |
         echo "Listing contents of build directory"
-        ls -R ${{ github.workspace }}/vectorvslist/build  # This will list the contents of the entire build directory
+        ls -R ${{ github.workspace }}\vectorvslist\build  # This will list the contents of the entire build directory
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
