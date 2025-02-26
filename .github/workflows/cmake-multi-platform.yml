@@ -77,7 +77,7 @@ jobs:
     - name: Debug - List Build Directory
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
-        if [[ "$RUNNER_OS" == "Windows" ]]; then
+        if [ "$RUNNER_OS" == "Windows" ]; then
           dir  # Windows file listing
         else
           ls -l  # Linux/macOS file listing
@@ -91,7 +91,7 @@ jobs:
     - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
-        if [[ "$RUNNER_OS" == "Windows" ]]; then
+        if [ "$RUNNER_OS" == "Windows" ]; then
           ./Release/vectorvslist.exe  # Adjust path for Windows
         else
           ./vectorvslist  # Adjust for Linux/macOS
