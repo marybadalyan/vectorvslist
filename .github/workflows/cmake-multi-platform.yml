@@ -74,14 +74,14 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
     
-    - name: Debug - List Build Directory
+     - name: Debug - List Build Directory
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       shell: bash  # Use bash shell for Linux/macOS
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          dir  # Windows file listing (PowerShell)
+          ls  # Use ls for file listing on Windows (Git Bash)
         else
-          ls -l  # Linux/macOS file listing (Bash)
+          ls -l  # Linux/macOS file listing
         fi
 
     - name: Fix Permissions (Linux/macOS)
@@ -96,12 +96,10 @@ jobs:
       run: |
         # Set executable name based on OS
         executable="vectorvslist"
+        
         if [ "$RUNNER_OS" == "Windows" ]; then
           executable="vectorvslist.exe"  # Add .exe for Windows
         fi
 
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          .\\$executable  # Use PowerShell path separator for Windows
-        else
-          ./$executable  # Use Bash path separator for Linux/macOS
-        fi
+        # Use the correct path separator for Windows and Linux/macOS
+        ./vectorvslist  # This works for both Windows (Git Bash) and Linux/macOS
