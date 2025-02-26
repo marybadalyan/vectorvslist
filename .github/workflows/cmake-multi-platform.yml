@@ -93,6 +93,7 @@ jobs:
         echo "Checking if executable exists: $executable_path"
         if [ -f "$executable_path" ]; then
           echo "Executable found, running it"
+          echo "$executable_path"
           # Run executable based on the platform
           if [ "$RUNNER_OS" == "Windows" ]; then
             # For Windows, use cmd to run the exe if it's Windows
