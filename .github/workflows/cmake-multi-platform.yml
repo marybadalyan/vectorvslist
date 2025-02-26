@@ -76,6 +76,7 @@ jobs:
     
     - name: Debug - List Build Directory
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      shell: bash  # Use bash shell for Linux/macOS
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           dir  # Windows file listing (PowerShell)
@@ -86,10 +87,12 @@ jobs:
     - name: Fix Permissions (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      shell: bash  # Use bash shell for Linux/macOS
       run: chmod +x vectorvslist  # Ensure the correct binary name for Linux/macOS
 
     - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      shell: bash  # Use bash shell for Linux/macOS
       run: |
         # Set executable name based on OS
         executable="vectorvslist"
