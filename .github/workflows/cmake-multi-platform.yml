@@ -41,7 +41,9 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        # Setting the build output directory to 'vectorvslist/build'
+        echo "build-output-dir=${{ github.workspace }}/vectorvslist/build" >> "$GITHUB_OUTPUT"
+        echo "Checking build directory: ${{ github.workspace }}/vectorvslist/build"
 
     - name: Configure CMake
       run: >
@@ -51,14 +53,20 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -S ${{ github.workspace }}
 
+    - name: List the CMake build output folder
+      shell: bash
+      run: |
+        echo "Listing contents of build directory"
+        ls -R ${{ github.workspace }}/vectorvslist/build  # This will list the contents of the entire build directory
+
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Debug - List Build Directory
+    - name: Debug - List Build Directory Again
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       shell: bash
       run: |
-        echo "Listing contents of build directory to debug"
+        echo "Listing the entire build directory again to debug"
         ls -R ${{ steps.strings.outputs.build-output-dir }}  # Recursively list files
 
     - name: Run Executable
