@@ -77,9 +77,20 @@ jobs:
     - name: Run executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
-        # Run the executable for each platform
+        # For Windows
         if [ $RUNNER_OS == 'Windows' ]; then
-          .\\your_executable.exe
-        else
-          ./your_executable
+          if [ -f ".\\${{ matrix.build_type }}\\your_executable.exe" ]; then
+            .\\${{ matrix.build_type }}\\your_executable.exe
+          else
+            echo "Executable not found on Windows"
+            exit 1
+          fi
+        # For macOS/Linux
+        elif [ $RUNNER_OS == 'Linux' ] || [ $RUNNER_OS == 'macOS' ]; then
+          if [ -f "./your_executable" ]; then
+            ./your_executable
+          else
+            echo "Executable not found on ${RUNNER_OS}"
+            exit 1
+          fi
         fi
