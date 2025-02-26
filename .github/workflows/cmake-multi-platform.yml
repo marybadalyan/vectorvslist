@@ -74,25 +74,23 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
 
-    - name: Run executable
+    - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      shell: bash
       run: |
-        # For Windows (check inside the Release or Debug folder)
-        if [ $RUNNER_OS == 'Windows' ]; then
-          if [ -f ".\\${{ matrix.build_type }}\\your_executable.exe" ]; then
-            .\\${{ matrix.build_type }}\\your_executable.exe
-          else
-            echo "Executable not found on Windows"
-            exit 1
-          fi
-        # For macOS/Linux (check inside the build folder, may need to check Debug/Release subfolders)
-        elif [ $RUNNER_OS == 'Linux' ] || [ $RUNNER_OS == 'macOS' ]; then
-          if [ -f "./${{ matrix.build_type }}/your_executable" ]; then
-            ./${{ matrix.build_type }}/your_executable
-          elif [ -f "./your_executable" ]; then
-            ./your_executable
-          else
-            echo "Executable not found on ${RUNNER_OS}"
-            exit 1
-          fi
+        # Set executable name based on OS
+        executable="vectorvslist"  # Start with base executable name
+        
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          executable="vectorvslist.exe"  # Add .exe for Windows
+        fi
+        
+        # Check if the file exists before trying to run it
+        echo "Checking if executable exists: $executable"
+        if [ -f "$executable" ]; then
+          echo "Executable found, running it"
+          ./$executable  # This works for both Windows (Git Bash) and Linux/macOS
+        else
+          echo "Executable not found: $executable"
+          exit 1  # Fail if the executable isn't found
         fi
