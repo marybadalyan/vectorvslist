@@ -78,21 +78,27 @@ jobs:
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          dir  # Windows file listing
+          dir  # Windows file listing (PowerShell)
         else
-          ls -l  # Linux/macOS file listing
+          ls -l  # Linux/macOS file listing (Bash)
         fi
 
     - name: Fix Permissions (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: chmod +x vectorvslist  # Ensure the correct binary name
+      run: chmod +x vectorvslist  # Ensure the correct binary name for Linux/macOS
 
     - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
+        # Set executable name based on OS
+        executable="vectorvslist"
         if [ "$RUNNER_OS" == "Windows" ]; then
-          ./Release/vectorvslist.exe  # Adjust path for Windows
+          executable="vectorvslist.exe"  # Add .exe for Windows
+        fi
+
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          .\\$executable  # Use PowerShell path separator for Windows
         else
-          ./vectorvslist  # Adjust for Linux/macOS
+          ./$executable  # Use Bash path separator for Linux/macOS
         fi
