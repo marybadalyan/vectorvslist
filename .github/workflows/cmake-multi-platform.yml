@@ -76,10 +76,10 @@ jobs:
     
     - name: Debug - List Build Directory
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: bash  # Use bash shell for Linux/macOS and Windows
+      shell: bash
       run: |
-        echo "Listing build directory for debugging"
-        ls -l ${{ steps.strings.outputs.build-output-dir }}/release  # List files to see the executable
+        echo "Listing the entire build directory to debug"
+        ls -l ${{ steps.strings.outputs.build-output-dir }}  # List all files in the build directory
 
     - name: Fix Permissions (Linux/macOS)
       if: runner.os != 'Windows'
@@ -89,7 +89,7 @@ jobs:
 
     - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: bash  # Use bash shell for Linux/macOS and Windows
+      shell: bash
       run: |
         # Set executable name based on OS
         executable="release/vectorvslist"  # Add the release directory to the path
