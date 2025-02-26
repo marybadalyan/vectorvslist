@@ -77,7 +77,7 @@ jobs:
     - name: Run executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
-        # For Windows
+        # For Windows (check inside the Release or Debug folder)
         if [ $RUNNER_OS == 'Windows' ]; then
           if [ -f ".\\${{ matrix.build_type }}\\your_executable.exe" ]; then
             .\\${{ matrix.build_type }}\\your_executable.exe
@@ -85,9 +85,11 @@ jobs:
             echo "Executable not found on Windows"
             exit 1
           fi
-        # For macOS/Linux
+        # For macOS/Linux (check inside the build folder, may need to check Debug/Release subfolders)
         elif [ $RUNNER_OS == 'Linux' ] || [ $RUNNER_OS == 'macOS' ]; then
-          if [ -f "./your_executable" ]; then
+          if [ -f "./${{ matrix.build_type }}/your_executable" ]; then
+            ./${{ matrix.build_type }}/your_executable
+          elif [ -f "./your_executable" ]; then
             ./your_executable
           else
             echo "Executable not found on ${RUNNER_OS}"
