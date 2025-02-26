@@ -76,30 +76,34 @@ jobs:
     
     - name: Debug - List Build Directory
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: bash  # Use bash shell for Linux/macOS
+      shell: bash  # Use bash shell for Linux/macOS and Windows
       run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          ls  # Use ls for file listing on Windows (Git Bash)
-        else
-          ls -l  # Linux/macOS file listing
-        fi
+        echo "Listing build directory for debugging"
+        ls -l ${{ steps.strings.outputs.build-output-dir }}/release  # List files to see the executable
 
     - name: Fix Permissions (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       shell: bash  # Use bash shell for Linux/macOS
-      run: chmod +x vectorvslist  # Ensure the correct binary name for Linux/macOS
+      run: chmod +x build/release/vectorvslist  # Ensure the correct binary name for Linux/macOS
 
     - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: bash  # Use bash shell for Linux/macOS
+      shell: bash  # Use bash shell for Linux/macOS and Windows
       run: |
         # Set executable name based on OS
-        executable="vectorvslist"
+        executable="release/vectorvslist"  # Add the release directory to the path
         
         if [ "$RUNNER_OS" == "Windows" ]; then
-          executable="vectorvslist.exe"  # Add .exe for Windows
+          executable="release/vectorvslist.exe"  # Add .exe for Windows
         fi
-
-        # Use the correct path separator for Windows and Linux/macOS
-        ./vectorvslist  # This works for both Windows (Git Bash) and Linux/macOS
+        
+        # Check if the file exists before trying to run it
+        echo "Checking if executable exists: $executable"
+        if [ -f "$executable" ]; then
+          echo "Executable found, running it"
+          ./$executable  # This works for both Windows (Git Bash) and Linux/macOS
+        else
+          echo "Executable not found: $executable"
+          exit 1  # Fail if the executable isn't found
+        fi
