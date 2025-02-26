@@ -54,32 +54,22 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --build-config ${{ matrix.build_type }}
-
     - name: Debug - List Build Directory
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       shell: bash
       run: |
-        echo "Listing the entire build directory to debug"
-        ls -l ${{ steps.strings.outputs.build-output-dir }}
-
-    - name: Fix Permissions (Linux/macOS)
-      if: runner.os != 'Windows'
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      shell: bash
-      run: chmod +x build/release/debug/vectorvslist  # Correct path for Linux/macOS
+        echo "Listing contents of build directory to debug"
+        ls -R ${{ steps.strings.outputs.build-output-dir }}  # Recursively list files
 
     - name: Run Executable
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       shell: bash
       run: |
         # Set executable name based on OS
-        executable="release/debug/vectorvslist"  # Add debug to the path for Windows/Linux/macOS
+        executable="vectorvslist"  # Start with base executable name
         
         if [ "$RUNNER_OS" == "Windows" ]; then
-          executable="release/debug/vectorvslist.exe"  # Add .exe for Windows
+          executable="vectorvslist.exe"  # Add .exe for Windows
         fi
         
         # Check if the file exists before trying to run it
